@@ -8,7 +8,7 @@ SplashScreen.preventAutoHideAsync();
 
 const RootNav = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Renamed to isLoggedIn
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default is false, change based on your logic
 
   useEffect(() => {
     const hideSplashScreen = async () => {
@@ -33,7 +33,7 @@ const RootNav = () => {
   }
 
   return (
-    <Stack screenOptions={{ headerShown:false }}>
+    <Stack screenOptions={{ headerShown: false }}>
       {isLoggedIn ? (
         <Redirect href={"/(main)"} /> // Redirect to main layout if logged in
       ) : (

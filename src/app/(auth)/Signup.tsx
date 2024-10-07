@@ -1,14 +1,26 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import AuthLayout from './_layout'; 
+import { Link } from 'expo-router'; // Import Link for navigation
 
 const Signup = () => {
   return (
-    <View>
+    <View style={styles.container}>
+      {/* Chat.gg Symbol */}
+      <View style={styles.header}>
+        <Text style={styles.icon}>⚡</Text> {/* Thunder icon */}
+        <Text style={styles.title}>chat.gg</Text> {/* Title */}
+      </View>
+
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Username"
         placeholderTextColor="#aaa"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        placeholderTextColor="#aaa"
+        keyboardType="phone-pad" // Set keyboard type to phone pad
       />
       <TextInput
         style={styles.input}
@@ -16,26 +28,39 @@ const Signup = () => {
         placeholderTextColor="#aaa"
         secureTextEntry
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        placeholderTextColor="#aaa"
-        secureTextEntry
-      />
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>Sign Up</Text> {/* Corrected button text */}
       </TouchableOpacity>
-      <Text style={styles.loginPrompt}>
+      <Text style={styles.signupPrompt}>
         Already have an account?{' '}
-        <Text style={styles.loginLink} onPress={() => console.log('Navigate to Login')}>
+        <Link href="/" style={styles.signupLink}> {/* Use Link for navigation */}
           Login
-        </Text>
+        </Link>
       </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#000', // Dark background
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  icon: {
+    fontSize: 100,
+    color: '#3B82F6', // Thunder icon color
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#fff', // White text
+  },
   input: {
     width: '100%',
     padding: 15,
@@ -57,11 +82,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  loginPrompt: {
+  signupPrompt: {
     color: '#fff',
     marginTop: 20,
   },
-  loginLink: {
+  signupLink: {
     color: '#3B82F6',
     fontWeight: '600',
   },

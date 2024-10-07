@@ -1,10 +1,16 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import AuthLayout from './_layout';
+import { Link } from 'expo-router'; // Import Link for navigation
 
 const Login = () => {
   return (
-    <View>
+    <View style={styles.container}>
+      {/* Chat.gg Symbol */}
+      <View style={styles.header}>
+        <Text style={styles.icon}>⚡</Text> {/* Thunder icon */}
+        <Text style={styles.title}>chat.gg</Text> {/* Title */}
+      </View>
+
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -21,15 +27,34 @@ const Login = () => {
       </TouchableOpacity>
       <Text style={styles.signupPrompt}>
         Don't have an account?{' '}
-        <Text style={styles.signupLink} onPress={() => console.log('Navigate to Signup')}>
+        <Link href="/Signup" style={styles.signupLink}> {/* Use Link for navigation */}
           Sign up
-        </Text>
+        </Link>
       </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#000', // Dark background
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  icon: {
+    fontSize: 100,
+    color: '#3B82F6', // Thunder icon color
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#fff', // White text
+  },
   input: {
     width: '100%',
     padding: 15,
