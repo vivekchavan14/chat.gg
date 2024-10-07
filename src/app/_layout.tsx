@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
 const RootNav = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Renamed to isLoggedIn
 
   useEffect(() => {
     const hideSplashScreen = async () => {
@@ -32,8 +33,12 @@ const RootNav = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" /> {/* This refers to your Home component */}
+    <Stack screenOptions={{ headerShown:false }}>
+      {isLoggedIn ? (
+        <Redirect href={"/(main)"} /> // Redirect to main layout if logged in
+      ) : (
+        <Redirect href={"/(auth)"} /> // Redirect to auth layout if not logged in
+      )}
     </Stack>
   );
 };
