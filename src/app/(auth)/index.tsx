@@ -1,8 +1,41 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router'; // Import Link for navigation
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import axios from 'axios'; // Import Axios
+import { Link } from 'expo-router'; 
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const Login = () => {
+  const [username, setUsername] = useState(''); // State for username
+  const [password, setPassword] = useState(''); // State for password
+
+  const router = useRouter();
+
+  // Function to handle login submission
+  const handleLogin = async () => {
+    try {
+      const payload = {
+        username: username,
+        password: password,
+      };
+
+      // Send POST request to Go backend's login endpoint
+      const response = await axios.post('http://localhost:8000/login', payload);
+
+      if (response.status === 200) {
+        const { token } = response.data; // Extract token from response
+        await AsyncStorage.setItem('jwtToken', token); // Store token in AsyncStorage
+        Alert.alert('Success', 'Logged in successfully!');
+        router.push('/Home'); // Redirect to main screen or chat screen upon successful login
+      } else {
+        Alert.alert('Error', 'Invalid credentials, please try again.');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      Alert.alert('Error', 'An error occurred during login.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Chat.gg Symbol */}
@@ -11,23 +44,34 @@ const Login = () => {
         <Text style={styles.title}>chat.gg</Text> {/* Title */}
       </View>
 
+      {/* Username Input */}
       <TextInput
         style={styles.input}
         placeholder="Username"
         placeholderTextColor="#aaa"
+        value={username}
+        onChangeText={setUsername} // Update username state
       />
+
+      {/* Password Input */}
       <TextInput
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#aaa"
         secureTextEntry
+        value={password}
+        onChangeText={setPassword} // Update password state
       />
-      <TouchableOpacity style={styles.button}>
+
+      {/* Login Button */}
+      <TouchableOpacity style={styles.button} onPress={handleLogin}> {/* Call handleLogin on press */}
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+
+      {/* Signup Link */}
       <Text style={styles.signupPrompt}>
         Don't have an account?{' '}
-        <Link href="/Signup" style={styles.signupLink}> {/* Use Link for navigation */}
+        <Link href="/Signup" style={styles.signupLink}>
           Sign up
         </Link>
       </Text>

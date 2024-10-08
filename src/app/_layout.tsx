@@ -8,7 +8,7 @@ SplashScreen.preventAutoHideAsync();
 
 const RootNav = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default is false, change based on your logic
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Initially setting it to true for testing
 
   useEffect(() => {
     const hideSplashScreen = async () => {
@@ -17,6 +17,15 @@ const RootNav = () => {
       setIsLoading(false);
     };
 
+    // Simulate fetching login status
+    const fetchLoginStatus = async () => {
+      // Simulating login status
+      const loggedInStatus = true; // Set true or false based on login status for testing
+      setIsLoggedIn(loggedInStatus);
+      console.log('Login status fetched:', loggedInStatus);
+    };
+
+    fetchLoginStatus();
     hideSplashScreen();
   }, []);
 
@@ -24,7 +33,7 @@ const RootNav = () => {
     return (
       <View style={styles.splashContainer}>
         <View style={styles.container}>
-          <Text style={styles.icon}>⚡</Text> {/* Thunder icon */}
+          <Text style={styles.icon}>⚡</Text>
           <Text style={styles.title}>chat.gg</Text>
         </View>
         <ActivityIndicator size="large" color="#3B82F6" style={styles.loadingIndicator} />
@@ -32,12 +41,21 @@ const RootNav = () => {
     );
   }
 
+  console.log('IsLoggedIn state:', isLoggedIn);
+
+  // Routing logic based on isLoggedIn
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {isLoggedIn ? (
-        <Redirect href={"/(main)"} /> // Redirect to main layout if logged in
+        <>
+          <Text>Redirecting to Main</Text> {/* Add this for debug visibility */}
+          <Redirect href="/(main)" />
+        </>
       ) : (
-        <Redirect href={"/(auth)"} /> // Redirect to auth layout if not logged in
+        <>
+          <Text>Redirecting to Auth</Text> {/* Add this for debug visibility */}
+          <Redirect href="/(auth)" />
+        </>
       )}
     </Stack>
   );
@@ -48,7 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000', // Dark background
+    backgroundColor: '#000',
   },
   container: {
     alignItems: 'center',
@@ -56,12 +74,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 100,
-    color: '#3B82F6', // Thunder icon color
+    color: '#3B82F6',
   },
   title: {
     fontSize: 32,
     fontWeight: '600',
-    color: '#fff', // White text
+    color: '#fff',
   },
   loadingIndicator: {
     marginTop: 20,

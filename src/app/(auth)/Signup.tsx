@@ -1,8 +1,39 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router'; // Import Link for navigation
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import axios from 'axios'; // Import Axios
+import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const Signup = () => {
+  // State variables to handle form input
+  const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+
+  const router = useRouter();
+
+  // Function to handle form submission
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/register', {
+        username,
+        password,
+        phone_number : phoneNumber,
+      });
+
+      if (response.status === 201) {
+        Alert.alert('Success', 'Account created successfully! Please login.');
+        // Optionally redirect to login or another screen
+        router.push('/')
+      } else {
+        Alert.alert('Error', 'Something went wrong, please try again.');
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      Alert.alert('Error', 'An error occurred during signup.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Chat.gg Symbol */}
@@ -11,29 +42,44 @@ const Signup = () => {
         <Text style={styles.title}>chat.gg</Text> {/* Title */}
       </View>
 
+      {/* Username input */}
       <TextInput
         style={styles.input}
         placeholder="Username"
         placeholderTextColor="#aaa"
+        value={username}
+        onChangeText={setUsername} // Handle input change
       />
+
+      {/* Phone Number input */}
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
         placeholderTextColor="#aaa"
-        keyboardType="phone-pad" // Set keyboard type to phone pad
+        keyboardType="phone-pad"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber} // Handle input change
       />
+
+      {/* Password input */}
       <TextInput
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#aaa"
         secureTextEntry
+        value={password}
+        onChangeText={setPassword} // Handle input change
       />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign Up</Text> {/* Corrected button text */}
+
+      {/* Signup button */}
+      <TouchableOpacity style={styles.button} onPress={handleSignup}> {/* Call handleSignup on press */}
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
+
+      {/* Link to Login */}
       <Text style={styles.signupPrompt}>
         Already have an account?{' '}
-        <Link href="/" style={styles.signupLink}> {/* Use Link for navigation */}
+        <Link href="/" style={styles.signupLink}>
           Login
         </Link>
       </Text>
@@ -46,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#000', // Dark background
+    backgroundColor: '#000',
   },
   header: {
     alignItems: 'center',
@@ -54,19 +100,19 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 100,
-    color: '#3B82F6', // Thunder icon color
+    color: '#3B82F6',
   },
   title: {
     fontSize: 32,
     fontWeight: '600',
-    color: '#fff', // White text
+    color: '#fff',
   },
   input: {
     width: '100%',
     padding: 15,
     borderRadius: 8,
-    backgroundColor: '#333', // Darker input background
-    color: '#fff', // White text
+    backgroundColor: '#333',
+    color: '#fff',
     marginBottom: 20,
   },
   button: {

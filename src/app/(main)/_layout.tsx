@@ -1,10 +1,13 @@
+import { Stack } from 'expo-router';
+import React from 'react';
 
-import { Stack } from 'expo-router'
-
-export default function MainLayout() {
+const MainLayout = () => {
   return (
-    <Stack>
-     
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" options={{ title: 'Chat List' }} />
+      {/* You can add other screens like Chat Details here */}
     </Stack>
-  )
-}
+  );
+};
+
+export default MainLayout;
